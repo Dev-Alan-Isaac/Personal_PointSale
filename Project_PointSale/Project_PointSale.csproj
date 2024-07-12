@@ -181,6 +181,9 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Resources\Addons\" />
+    <Folder Include="Resources\CSS\" />
+    <Folder Include="Resources\JS\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
