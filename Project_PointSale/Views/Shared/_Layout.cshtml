@@ -1,39 +1,194 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@@Dev-Alan-Isaac</title> @*Name of the page*@
+
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-</head>
-<body>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
-        <div class="container">
-            @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
-
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+
     @RenderSection("scripts", required: false)
+
+    <link href="~/Resources/Assets/images/logo-sm.svg" rel="icon" />
+
+    <!-- Bootstrap font icons css -->
+    <link rel="stylesheet" href="~/Resources/Assets/fonts/bootstrap/bootstrap-icons.css" />
+    <!-- Main css -->
+    <link rel="stylesheet" href="~/Resources/Assets/css/main.min.css" />
+    <!-- Scrollbar CSS -->
+    <link rel="stylesheet" href="~/Resources/Assets/vendor/overlay-scroll/OverlayScrollbars.min.css" />
+</head>
+<body>
+    <div class="page-wrapper">
+        <div class="page-header">
+
+            <div class="toggle-sidebar" id="toggle-sidebar">
+                <i class="bi bi-list"></i>
+            </div>
+            <div class="header-actions-container">
+                <div class="header-profile d-flex align-items-center">
+
+                    @*Dropdown for the icon on the top of the bar*@
+                    <div class="dropdown">
+                        <a href="#" id="userSettings" class="user-settings" data-toggle="dropdown" aria-haspopup="true">
+                            <span class="avatar">
+                                <img src="~/Resources/Assets/images/user.png" alt="Admin Panel" />
+                            </span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userSettings">
+                            <div class="header-profile-actions">
+                                <a href="@Url.Action("Index","Home")">Inicio de sesión</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="main-container">
+            <nav class="sidebar-wrapper">
+
+                <div class="brand">
+                    <a href="@Url.Action("Index","Home")" class="logo">
+                        <img src="~/Resources/Assets/images/logo.svg" class="d-none d-md-block me-4" alt="Nexus Admin Dashboard" />
+                        <img src="~/Resources/Assets/images/logo-sm.svg" class="d-block d-md-none me-4" alt="Nexus Admin Dashboard" />
+                    </a>
+                </div>
+
+                <div class="sidebar-quick-links">
+                    <h6 class="fw-light mt-5 mb-3 text-center text-white">
+                        Accesos Rapidos
+                    </h6>
+
+                    <div class="quick-links">
+                        <a href="#" id="shoppingLink" class="shade-primary" data-bs-toggle="tooltip" data-bs-title="Compras" data-bs-custom-class="custom-tooltip-red">
+                            <i class="bi bi-cart-plus"></i>
+                        </a>
+                        <a href="" id="quoteLink" class="shade-primary" data-bs-toggle="tooltip" data-bs-title="Cotizaciones" data-bs-custom-class="custom-tooltip-red">
+                            <i class="bi bi-cart-check"></i>
+                        </a>
+                        <a href="" id="calendarLink" class="shade-primary" data-bs-toggle="tooltip" data-bs-title="Calendario" data-bs-custom-class="custom-tooltip-red">
+                            <i class="bi bi-calendar4"></i>
+                        </a>
+                    </div>
+
+                </div>
+
+                <div class="sidebar-menu">
+                    <div class="sidebarMenuScroll">
+                        <ul>
+
+                            @*Tabs for each action/page:
+                                Con make it using the following command <a href=" @Url.Action("Index", "Employee_ActivityLog")">Index</a>*@
+
+                            <li class="sidebar-dropdown">
+                                <a href="#">
+                                    <i class="bi bi-calendar"></i>
+                                    <span class="menu-text">Tab</span>
+                                </a>
+                                <div class="sidebar-submenu">
+                                    <ul>
+                                        <li id="Index">
+                                            <a href="@Url.Action("Index","Home")">Index</a>
+                                        </li>
+                                        <li id="Contact">
+                                            <a href="@Url.Action("Contact","Home")">Contact</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            @{
+                var controller = ViewContext.RouteData.Values["Controller"].ToString();
+                var action = ViewContext.RouteData.Values["Action"].ToString();
+            }
+            <div class="content-wrapper-scroll">
+                <div class="main-header">
+                    <div class="d-flex align-items-center justify-content-center">
+                        @{
+                            // Mapping of controller names to custom names
+                            var controllerNameMap = new Dictionary<string, string>{
+                                {"Home", "Inicio"},
+                            };
+
+                            // Mapping of action names to custom names
+                            var actionNameMap = new Dictionary<string, string>{
+                                {"Index", "Índice"},
+                                {"Contact", "Contacto"},
+                                {"Create", "Agregar"},
+                                {"Delete", "Borrar"},
+                                {"Edit", "Editar"},
+                            };
+
+                            // Mapping of action icons to the Action/Page
+                            var controllerActionIconMap = new Dictionary<(string, string), string>{
+                                {("Home", "Index"), "bi bi-house"},
+                            };
+
+                            var key = (controller, action);
+
+                            if (controllerActionIconMap.ContainsKey(key))
+                            {
+                                <div class="page-icon">
+                                    <i class="@controllerActionIconMap[key]"></i>
+                                </div>
+                            }
+                        }
+                        <div class="page-title d-none d-md-block">
+                            <h5 style="color:black;">
+                                <text>@(controllerNameMap.ContainsKey(controller) ? controllerNameMap[controller] : controller) > @(actionNameMap.ContainsKey(action) ? actionNameMap[action] : action)</text>
+                            </h5>
+                        </div>
+                    </div>
+
+                    @*Updates/Notifications*@
+                    <ul class="updates d-flex align-items-end flex-column overflow-hidden" id="updates">
+                        <li>
+                            <a href="#">
+                                <i class="bi bi-exclamation-circle text-primary font-1x me-2"></i>
+                                <span>Notification 1</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="bi bi-exclamation-triangle text-primary font-1x me-2"></i>
+                                <span>Notification 2</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                @*DONT REMOVE THIS LINE IS WHERE IS RENDER THE PAGES*@
+                <div class="content-wrapper">
+                    @RenderBody()
+                </div>
+
+            </div>
+            <div class="app-footer">
+                <span>&copy; @DateTime.Now.Year - @@Dev-Alan-Isaac</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay Scroll JS -->
+    <script src="~/Resources/Assets/vendor/overlay-scroll/jquery.overlayScrollbars.min.js"></script>
+    <script src="~/Resources/Assets/vendor/overlay-scroll/custom-scrollbar.js"></script>
+
+    <!-- News ticker -->
+    <script src="~/Resources/Assets/vendor/newsticker/newsTicker.min.js"></script>
+    <script src="~/Resources/Assets/vendor/newsticker/custom-newsTicker.js"></script>
+
+    <!-- Main Js Required -->
+    <script src="~/Resources/Assets/js/main.js"></script>
 </body>
 </html>
